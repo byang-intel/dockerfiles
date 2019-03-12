@@ -1,0 +1,1 @@
+/opt/intel/computer_vision_sdk/inference_engine/samples/CMakeLists.txt

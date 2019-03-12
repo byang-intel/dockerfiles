@@ -1,12 +1,11 @@
-#!/bin/bash
+#!/bin/bash -e
 
-exec_args="$@"
+set -x
 
 source /opt/intel/computer_vision_sdk/bin/setupvars.sh
 export PATH=/opt/openvino/samples:$PATH
 
 : ${TARGET:="CPU"}
-export TARGET
 
 openvino_model_path()
 {
@@ -18,6 +17,17 @@ openvino_model_path()
 	fi
 	echo $INTEL_CVSDK_DIR/deployment_tools/intel_models/$1/$target_precision/$1.xml
 }
-export -f openvino_model_path
 
-exec $exec_args
+trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
+
+touch .lock
+
+python `dirname $0`/http_mjpg.py &
+
+`dirname $0`/build/intel64/Release/face_detect_demo \
+        -d $TARGET \
+        -m `openvino_model_path face-detection-adas-0001` \
+        -m_ag `openvino_model_path age-gender-recognition-retail-0013` \
+        -i $INPUT_STREAM
+
+wait
