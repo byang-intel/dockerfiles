@@ -2,11 +2,12 @@ FROM byangintel/opencv-ubuntu-arm64
 MAINTAINER bin.yang@intel.com
 WORKDIR /opt/build
 
+RUN apt-get -y update
+
 RUN apt-get install -y ca-certificates \
 	&& update-ca-certificates
 
-RUN apt-get -y update \
-	&& apt-get install -y --no-install-recommends vim git cmake build-essential libmicrohttpd-dev libcurl4-openssl-dev libyaml-dev
+RUN apt-get install -y --no-install-recommends vim git curl cmake build-essential libmicrohttpd-dev libcurl4-openssl-dev libyaml-dev python3-paho-mqtt
 
 # edgex device sdk
 RUN wget --no-check-certificate https://github.com/edgexfoundry/device-sdk-c/archive/0.7.1.tar.gz \
