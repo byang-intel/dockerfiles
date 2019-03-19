@@ -27,6 +27,13 @@ RUN wget -O - http://registrationcenter-download.intel.com/akdlm/irc_nas/15078/l
 	&& make -j$(nproc) \
 	&& cp -a /opt/build/intel64/Release /opt/openvino/samples
 
+
+RUN source /opt/intel/computer_vision_sdk/bin/setupvars.sh \
+        && /opt/intel/computer_vision_sdk/install_dependencies/install_NEO_OCL_driver.sh
+
+RUN echo "fixup: install intel-opencl..."
+RUN rpm -ivh --force /opt/intel/computer_vision_sdk/install_dependencies/intel-opencl-18.28.11080.x86_64.rpm
+
 COPY centos_openvino/entrypoint.sh /opt/openvino/
 RUN chmod +x /opt/openvino/entrypoint.sh
 
