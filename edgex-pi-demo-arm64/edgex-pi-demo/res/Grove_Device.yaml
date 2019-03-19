@@ -1,0 +1,117 @@
+name: "Grove_Device"
+manufacturer: "IoTechSystems"
+model: "IoT1"
+description: "Example Sensor"
+labels:
+  - "sensor"
+
+deviceResources:
+  - name: Red-LED
+    description: "Turn the Red LED to On/Off"
+    attributes:
+      { Pin_Num: "13", Interface: "GPIO", Type: "OUT" }
+    properties:
+      value:
+        { type: "Bool", readWrite: "RW", size: "1", minimum: "0", maximum: "1", defaultValue: "0" }
+      units:
+        { type: "String", readWrite: "R", defaultValue: "Enabled/Disabled" }
+  - name: Green-LED
+    description: "Turn the Green LED to On/Off"
+    attributes:
+      { Pin_Num: "19", Interface: "GPIO", Type: "OUT" }
+    properties:
+      value:
+        { type: "Bool", readWrite: "RW", size: "1", minimum: "0", maximum: "1", defaultValue: "0" }
+      units:
+        { type: "String", readWrite: "R", defaultValue: "Enabled/Disabled" }
+  - name: Blue-LED
+    description: "Turn the Blue LED to On/Off"
+    attributes:
+      { Pin_Num: "26", Interface: "GPIO", Type: "OUT" }
+    properties:
+      value:
+        { type: "Bool", readWrite: "RW", size: "1", minimum: "0", maximum: "1", defaultValue: "0" }
+      units:
+        { type: "String", readWrite: "R", defaultValue: "Enabled/Disabled" }
+  - name: Sensor-Dist
+    description: "Distance Sensor"
+    attributes:
+      { Pin_Num: "3,4", Interface: "Sensor-Dist" }
+    properties:
+      value:
+        { type: "Int32", readWrite: "R", defaultValue: "0" }
+      units:
+        { type: "String", readWrite: "R", defaultValue: "0" }
+
+resources:
+  - name: Set_GreenLed
+    set:
+    - { operation: "set", object: "Green-LED", property: "value", parameter: "Green-LED" }
+  - name: Set_RedLed
+    set:
+    - { operation: "set", object: "Red-LED", property: "value", parameter: "Red-LED" }
+  - name: Set_BlueLed
+    set:
+    - { operation: "set", object: "Blue-LED", property: "value", parameter: "Blue-LED" }
+  - name: Get_SensorDist
+    get:
+    - { operation: "get", object: "Sensor-Dist", property: "value", parameter: "Sensor-Dist" }
+
+commands:
+  - name: Set_GreenLed
+    put:
+      path: "/api/v1/device/{deviceId}/Set_GreenLed"
+      parameterNames: ["Green-LED"]
+      responses:
+      - code: "204"
+        description: "valid and accepted"
+        expectedValues: []
+      - code: "400"
+        description: "bad request"
+        expectedValues: []
+      - code: "503"
+        description: "service unavailable"
+        expectedValues: []
+
+  - name: Set_RedLed
+    put:
+      path: "/api/v1/device/{deviceId}/Set_RedLed"
+      parameterNames: ["Red-LED"]
+      responses:
+      - code: "204"
+        description: "valid and accepted"
+        expectedValues: []
+      - code: "400"
+        description: "bad request"
+        expectedValues: []
+      - code: "503"
+        description: "service unavailable"
+        expectedValues: []
+
+  - name: Set_BlueLed
+    put:
+      path: "/api/v1/device/{deviceId}/Set_BlueLed"
+      parameterNames: ["Blue-LED"]
+      responses:
+      - code: "204"
+        description: "valid and accepted"
+        expectedValues: []
+      - code: "400"
+        description: "bad request"
+        expectedValues: []
+      - code: "503"
+        description: "service unavailable"
+        expectedValues: []
+
+  - name: Get_SensorDist
+    get:
+      path: "/api/v1/device/{deviceId}/Get_SensorDist"
+      responses:
+        -
+          code: "200"
+          description: "Get the Distance Sensor value."
+          expectedValues: ["Sensor-Dist"]
+        -
+          code: "503"
+          description: "service unavailable"
+          expectedValues: []

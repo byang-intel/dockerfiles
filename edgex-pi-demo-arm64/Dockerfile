@@ -26,5 +26,12 @@ RUN git clone https://github.com/intel-iot-devkit/mraa.git \
 	&& mkdir -p build && cd build && cmake -DBUILDSWIG=OFF -DCMAKE_INSTALL_PREFIX=/usr .. \
 	&& make && make install
 
+COPY edgex-pi-demo-arm64/edgex-pi-demo /opt/edgex-pi-demo
+RUN cd /opt/edgex-pi-demo \
+	&& mkdir build \
+	&& cd build \
+	&& cmake ../src \
+	&& make
+
 ENTRYPOINT ["/usr/local/bin/tini", "-g", "--"]
-CMD ["/bin/sh"]
+CMD ["/opt/edgex-pi-demo/start.sh"]
