@@ -2,6 +2,8 @@
 
 - [Host Setup](#Host-Setup)
 - [Pi Setup](#Pi-Setup)
+- [MQTT Message Format](#MQTT-Message-Format)
+- [Face Detection Result](#Face-Detection-Result)
 - [Demo](#Demo)
 
 ## Host Setup
@@ -25,6 +27,24 @@ docker-compose up -d
 ```
 
 ## Pi Setup
+
+Pi Version: Raspberry Pi 3B/3B+
+
+Pin connection:
+
+    Red-LED: GPIO 13
+
+    Green-LED: GPIO 19
+
+    Blue-LED: GPIO 26
+
+    Distance Sensor:
+
+        Trig Pin: GPIO 3
+
+        Echo Pin: GPIO 4
+
+
 Firstly, flash any linux distrubition and enable docker.
 
 E.g. To install ubuntu, it can refer to below link
@@ -51,6 +71,48 @@ If the MQTT_BROKER_ADDR is modified, it needs to re-launch the serivers
 ```
 docker-compose restart
 ```
+
+## MQTT Message Format
+
+### From Pi to Host:
+
+    Topic: EdgeX/SensorDist
+
+    Message Format: JSON
+
+    Sample Code to decode the message
+```
+    if (message.topic == "EdgeX/SensorDist") {
+        var raw = JSON.parse(message.payload);
+        var data = {
+            'device' : raw.readings[0].device,
+            'name' : raw.readings[0].name,
+            'distance' : raw.readings[0].value,
+        };
+    }
+```
+
+### From Host to Pi:
+
+    Topic: EdgeX/Command
+
+    Message Format: JSON
+
+    Samples to control Leds and Camera:
+```
+    {"command":"Set_RedLed", "data":{"Red-LED":"true"}}
+    {"command":"Set_RedLed", "data":{"Red-LED":"false"}}
+    {"command":"Set_GreenLed", "data":{"Green-LED":"true"}}
+    {"command":"Set_GreenLed", "data":{"Green-LED":"false"}}
+    {"command":"Set_BlueLed", "data":{"Blue-LED":"true"}}
+    {"command":"Set_BlueLed", "data":{"Blue-LED":"false"}}
+    {"command":"camera_on"}
+    {"command":"camera_off"}
+```
+
+## Face Detection Result
+
+The result is Motion JPEG: http://<host ip>:49990
 
 ## Demo
 
