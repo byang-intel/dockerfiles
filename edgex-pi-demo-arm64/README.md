@@ -119,7 +119,7 @@ The result is Motion JPEG: http://host_ip:49990
 Demo video: [https://byang-intel.github.io/edgex-pi-demo-arm64/edgex-pi-demo.mp4](https://byang-intel.github.io/edgex-pi-demo-arm64/edgex-pi-demo.mp4)
 
 
-1. Load WebUI: [https://byang-intel.github.io/edgex-pi-demo-arm64/](https://byang-intel.github.io/edgex-pi-demo-arm64/)
+1. Load WebUI (Tested on Chrome): [https://byang-intel.github.io/edgex-pi-demo-arm64/](https://byang-intel.github.io/edgex-pi-demo-arm64/)
 2. Set the host ip and click connect button. The browser might warn "Insecure content blocked". Please enable the "unsafe scripts".
 3. Subscript "EdgeX/SensorDist" to monitor distance sensor value
 4. Enable the camera to stream the camera data from Pi to host for face detection.
