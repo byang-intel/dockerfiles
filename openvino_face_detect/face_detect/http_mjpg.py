@@ -28,5 +28,5 @@ def gen():
             sleep(0.1)
          
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=49990, debug=True) 
+    app.run(host='0.0.0.0', port=49990, threaded=True, debug=True)
 
