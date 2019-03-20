@@ -112,7 +112,7 @@ docker-compose restart
 
 ## Face Detection Result
 
-The result is Motion JPEG: http://<host ip>:49990
+The result is Motion JPEG: http://host_ip:49990
 
 ## Demo
 
