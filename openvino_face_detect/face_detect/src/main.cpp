@@ -402,10 +402,10 @@ int main(int argc, char *argv[]) {
             // End of file (or a single frame file like an image). The last frame is displayed to let you check what is shown
             if (isLastFrame) {
                 timer.finish("total");
-                if (!FLAGS_no_wait) {
-                    std::cout << "No more frames to process. Press any key to exit" << std::endl;
-                    cv::waitKey(0);
-                }
+//                if (!FLAGS_no_wait) {
+//                    std::cout << "No more frames to process. Press any key to exit" << std::endl;
+//                    cv::waitKey(0);
+//                }
                 break;
             } else if (!FLAGS_no_show && -1 != cv::waitKey(1)) {
                 timer.finish("total");

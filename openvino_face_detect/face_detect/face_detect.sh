@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash
 
 set -x
 
@@ -24,10 +24,14 @@ touch .lock
 
 python `dirname $0`/http_mjpg.py &
 
-`dirname $0`/build/intel64/Release/face_detect_demo \
-        -d $TARGET \
-        -m `openvino_model_path face-detection-adas-0001` \
-        -m_ag `openvino_model_path age-gender-recognition-retail-0013` \
-        -i $INPUT_STREAM
+while true; do
+	cp -f `dirname $0`/disconnected.jpg out.jpg
+	`dirname $0`/build/intel64/Release/face_detect_demo \
+		-d $TARGET \
+		-m `openvino_model_path face-detection-adas-0001` \
+		-m_ag `openvino_model_path age-gender-recognition-retail-0013` \
+		-i $INPUT_STREAM
+	sleep 1
+done
 
 wait
