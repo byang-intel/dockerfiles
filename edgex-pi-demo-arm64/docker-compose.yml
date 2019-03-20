@@ -248,7 +248,6 @@ services:
     volumes:
       - /dev:/dev
       - /sys:/sys
-      - ./opt/edgex-pi-demo:/opt/edgex-pi-demo
       - db-data:/data/db
       - log-data:/edgex/logs
       - consul-config:/consul/config
