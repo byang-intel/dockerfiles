@@ -7,7 +7,7 @@ if [ -n "$DISPLAY" ]; then
 	xhost +local:root
 fi
 
-sudo docker run --rm=true \
+sudo -E docker run --rm=true \
 	--network host --env PS1 --env http_proxy --env https_proxy \
 	--env DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix \
 	-v $PWD/share:/share -it $@
