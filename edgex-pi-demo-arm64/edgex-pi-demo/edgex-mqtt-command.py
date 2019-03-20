@@ -33,14 +33,11 @@ def on_message(client, userdata, message):
         print(run)
         os.system(run)
 
-broker_address="shclpe02.sh.intel.com"
+broker_address=os.environ["MQTT_BROKER_ADDR"]
+broker_port=int(os.environ.get("MQTT_BROKER_PORT", "1883"))
 client = mqtt.Client("EdgeX/Command")
 client.on_message = on_message
-print("connecting to broker ...")
-client.connect(broker_address)
-client.loop_start()
+client.connect(broker_address, broker_port)
 print("Subscribing to topic: EdgeX/Command ...")
 client.subscribe("EdgeX/Command")
-
-while True:
-    time.sleep(1)
+client.loop_forever()
