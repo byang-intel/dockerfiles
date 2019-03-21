@@ -7,6 +7,10 @@ storage:
     blobdescriptor: inmemory
   filesystem:
     rootdirectory: /var/lib/registry
+    maxthreads: 512
+  maintenance:
+    readonly:
+      enabled: true
 http:
   addr: :5000
   headers:
