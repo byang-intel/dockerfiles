@@ -95,6 +95,10 @@ int main(int argc, char *argv[]) {
         if (!cap.read(frame)) {
             throw std::logic_error("Failed to get frame from cv::VideoCapture");
         }
+
+        // downgrade the frame size
+        cv::resize(frame, frame, cv::Size(), 0.8, 0.8);
+
         // ---------------------------------------------------------------------------------------------------
         // --------------------------- 1. Loading plugin to the Inference Engine -----------------------------
         std::map<std::string, InferencePlugin> pluginsForDevices;
@@ -361,7 +365,10 @@ int main(int argc, char *argv[]) {
 //                cv::imshow("Detection results", prev_frame);
 		flock(fd_lock, LOCK_EX);
                 cv::imwrite(".tmp.out.jpg", prev_frame);
-		system("mv .tmp.out.jpg out.jpg");
+		int ret = system("mv .tmp.out.jpg out.jpg");
+		if (ret != 0 ) {
+			slog::err << "system execute mv failed with return: "<< ret << slog::endl;
+		}
 		flock(fd_lock, LOCK_UN);
                 timer.finish("visualization");
             } else if (FLAGS_r) {

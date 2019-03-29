@@ -4,12 +4,15 @@ set -x
 
 source /opt/intel/computer_vision_sdk/bin/setupvars.sh
 export PATH=/opt/openvino/samples:$PATH
+export INTEL_CVSDK_DIR=/opt/intel/computer_vision_sdk
 
 : ${TARGET:="CPU"}
+: ${INPUT_STREAM:="/opt/face_detect/test_face_detect.mp4"}
+echo $TARGET
 
 openvino_model_path()
 {
-	if [ "$target" = "MYRIAD" ]; then
+	if [ "$TARGET" = "MYRIAD" ]; then
 		# MYRIAD supports networks with FP16 format only
 		target_precision="FP16"
 	else
@@ -28,10 +31,11 @@ while true; do
 	cp -f `dirname $0`/disconnected.jpg out.jpg
 	`dirname $0`/build/intel64/Release/face_detect_demo \
 		-d $TARGET \
+		-d_ag $TARGET \
 		-m `openvino_model_path face-detection-adas-0001` \
 		-m_ag `openvino_model_path age-gender-recognition-retail-0013` \
 		-i $INPUT_STREAM
-	sleep 1
+	sleep 10
 done
 
 wait
