@@ -10,6 +10,9 @@ RUN apt-get -y update \
 		psmisc vim git curl cmake build-essential \
 		libmicrohttpd-dev libcurl4-openssl-dev libyaml-dev python3-paho-mqtt
 
+RUN apt-get install -y --no-install-recommends ca-certificates \
+	&& update-ca-certificates
+
 # edgex device sdk
 RUN wget --no-check-certificate https://github.com/edgexfoundry/device-sdk-c/archive/0.7.1.tar.gz \
 	&& tar -xzf 0.7.1.tar.gz \
