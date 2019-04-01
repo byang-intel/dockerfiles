@@ -1,13 +1,18 @@
-FROM byangintel/opencv-ubuntu-arm64
+FROM arm64v8/ubuntu:bionic
 MAINTAINER bin.yang@intel.com
 WORKDIR /opt/build
 
-RUN apt-get -y update
+COPY qemu-aarch64-static /usr/bin/
 
-RUN apt-get install -y ca-certificates \
+RUN apt-get -y update \
+	&& apt-get -y upgrade \
+	&& apt-get install -y --no-install-recommends \
+		wget \
+		python3-opencv python-opencv python3-flask python-flask \
+		ca-certificates \
+		psmisc vim git curl cmake build-essential \
+		libmicrohttpd-dev libcurl4-openssl-dev libyaml-dev python3-paho-mqtt \
 	&& update-ca-certificates
-
-RUN apt-get install -y --no-install-recommends vim git curl cmake build-essential libmicrohttpd-dev libcurl4-openssl-dev libyaml-dev python3-paho-mqtt
 
 # edgex device sdk
 RUN wget --no-check-certificate https://github.com/edgexfoundry/device-sdk-c/archive/0.7.1.tar.gz \
@@ -18,7 +23,7 @@ RUN wget --no-check-certificate https://github.com/edgexfoundry/device-sdk-c/arc
 	&& cp build/release/c/libcsdk.so /usr/lib
 
 # mraa
-COPY edgex-pi-demo-arm64/rpi_patch /opt/build/rpi_patch
+COPY rpi_patch /opt/build/rpi_patch
 RUN git clone https://github.com/intel-iot-devkit/mraa.git \
 	&& cd mraa \
 	&& git reset --hard d320776 \
@@ -26,12 +31,26 @@ RUN git clone https://github.com/intel-iot-devkit/mraa.git \
 	&& mkdir -p build && cd build && cmake -DBUILDSWIG=OFF -DCMAKE_INSTALL_PREFIX=/usr .. \
 	&& make && make install
 
-COPY edgex-pi-demo-arm64/edgex-pi-demo /opt/edgex-pi-demo
+COPY edgex-pi-demo /opt/edgex-pi-demo
 RUN cd /opt/edgex-pi-demo \
 	&& mkdir build \
 	&& cd build \
 	&& cmake ../src \
 	&& make
+
+RUN wget --no-check-certificate https://www.johnvansickle.com/ffmpeg/old-releases/ffmpeg-3.3.4-arm64-64bit-static.tar.xz \
+        && tar xvf ffmpeg-3.4.2-arm64-64bit-static.tar.xz \
+	&& cp -f ffmpeg-3.3.4-arm64-64bit-static/ffserver /usr/local/bin/ \
+	&& cp -f ffmpeg-3.3.4-arm64-64bit-static/ffmpeg /usr/local/bin/
+
+COPY ffserver.conf /opt/edgex-pi-demo/ffserver.conf
+
+ENV TINI_VERSION v0.18.0
+RUN mkdir -p /usr/local/bin
+RUN wget --no-check-certificate -O /usr/local/bin/tini "https://github.com/krallin/tini/releases/download/$TINI_VERSION/tini-arm64"
+RUN chmod +x /usr/local/bin/tini
+
+WORKDIR /opt/edgex-pi-demo
 
 ENTRYPOINT ["/usr/local/bin/tini", "-g", "--"]
 CMD ["/opt/edgex-pi-demo/start.sh"]
