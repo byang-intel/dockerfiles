@@ -4,7 +4,7 @@ WORKDIR /opt/face_detect
 
 RUN apt-get update && apt-get install -y python-flask udev usb-modeswitch usbutils
 
-COPY openvino/face_detect /opt/face_detect 
+COPY face_detect /opt/face_detect 
 RUN cd /opt/face_detect/ \
 	&& mkdir build \
 	&& cd build \

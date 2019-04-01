@@ -28,7 +28,7 @@ RUN  mkdir -p /opt/openvino/samples && cp -a /opt/build/intel64/Release /opt/ope
 RUN echo "fixup: install intel-opencl..."
 RUN apt install /opt/intel/computer_vision_sdk/install_dependencies/intel-opencl_18.28.11080_amd64.deb
 
-COPY openvino/entrypoint.sh /opt/openvino/
+COPY entrypoint.sh /opt/openvino/
 RUN chmod +x /opt/openvino/entrypoint.sh
 
 ENV TINI_VERSION v0.18.0

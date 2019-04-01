@@ -4,7 +4,7 @@ WORKDIR /opt/face_detect
 
 RUN yum install -y -q python-flask
 
-COPY openvino/face_detect /opt/face_detect
+COPY face_detect /opt/face_detect
 RUN cd /opt/face_detect/ \
 	&& mkdir build \
 	&& cd build \

@@ -34,7 +34,7 @@ RUN source /opt/intel/computer_vision_sdk/bin/setupvars.sh \
 RUN echo "fixup: install intel-opencl..."
 RUN rpm -ivh --force /opt/intel/computer_vision_sdk/install_dependencies/intel-opencl-18.28.11080.x86_64.rpm
 
-COPY openvino/entrypoint.sh /opt/openvino/
+COPY entrypoint.sh /opt/openvino/
 RUN chmod +x /opt/openvino/entrypoint.sh
 
 ENV TINI_VERSION v0.18.0
