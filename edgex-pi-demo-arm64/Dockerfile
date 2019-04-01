@@ -38,7 +38,7 @@ RUN cd /opt/edgex-pi-demo \
 	&& make
 
 RUN wget --no-check-certificate https://www.johnvansickle.com/ffmpeg/old-releases/ffmpeg-3.3.4-arm64-64bit-static.tar.xz \
-        && tar xvf ffmpeg-3.4.2-arm64-64bit-static.tar.xz \
+        && tar xvf ffmpeg-3.3.4-arm64-64bit-static.tar.xz \
 	&& cp -f ffmpeg-3.3.4-arm64-64bit-static/ffserver /usr/local/bin/ \
 	&& cp -f ffmpeg-3.3.4-arm64-64bit-static/ffmpeg /usr/local/bin/
 
