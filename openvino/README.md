@@ -11,4 +11,9 @@ cp 97-myriad-usbboot.rules /etc/udev/rules.d/
 # apply udev change
 
 sudo docker run --rm=true --privileged=true --network=host --env TARGET=MYRIAD --env INPUT_STREAM=<stream url> -p 49990:49990 -v /dev:/dev -v /sys:/sys -it byangintel/openvino-face_detect-centos
+
+or
+
+sudo docker run --rm=true --privileged=true -v /proc/1/ns/net:/run/netns/host  --env TARGET=MYRIAD --env INPUT_STREAM=<stream url> -p 49990:49990 -v /dev:/dev -v /sys:/sys -it byangintel/openvino-face_detect-centos
+
 ```
