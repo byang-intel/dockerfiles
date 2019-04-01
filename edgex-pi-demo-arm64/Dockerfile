@@ -5,14 +5,10 @@ WORKDIR /opt/build
 COPY hooks/qemu-aarch64-static /usr/bin/
 
 RUN apt-get -y update \
-	&& apt-get -y upgrade \
 	&& apt-get install -y --no-install-recommends \
 		wget \
-		python3-opencv python-opencv python3-flask python-flask \
-		ca-certificates \
 		psmisc vim git curl cmake build-essential \
-		libmicrohttpd-dev libcurl4-openssl-dev libyaml-dev python3-paho-mqtt \
-	&& update-ca-certificates
+		libmicrohttpd-dev libcurl4-openssl-dev libyaml-dev python3-paho-mqtt
 
 # edgex device sdk
 RUN wget --no-check-certificate https://github.com/edgexfoundry/device-sdk-c/archive/0.7.1.tar.gz \
