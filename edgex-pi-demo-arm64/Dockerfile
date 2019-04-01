@@ -2,7 +2,7 @@ FROM arm64v8/ubuntu:bionic
 MAINTAINER bin.yang@intel.com
 WORKDIR /opt/build
 
-COPY qemu-aarch64-static /usr/bin/
+COPY hooks/qemu-aarch64-static /usr/bin/
 
 RUN apt-get -y update \
 	&& apt-get -y upgrade \
