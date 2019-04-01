@@ -3,7 +3,7 @@ MAINTAINER bin.yang@intel.com
 WORKDIR /opt/openvino
 
 # COMMON BUILD TOOLS
-RUN yum install -y -q bzip2 make autoconf libtool git wget ca-certificates pkg-config gcc gcc-c++ bison flex patch epel-release sudo gtk2-devel
+RUN yum install -y -q bzip2 make autoconf libtool git wget ca-certificates pkg-config gcc gcc-c++ bison flex patch epel-release sudo gtk2-devel iproute
 
 # We need new cmake version
 ARG CMAKE_VER=3.13.1
@@ -34,7 +34,7 @@ RUN source /opt/intel/computer_vision_sdk/bin/setupvars.sh \
 RUN echo "fixup: install intel-opencl..."
 RUN rpm -ivh --force /opt/intel/computer_vision_sdk/install_dependencies/intel-opencl-18.28.11080.x86_64.rpm
 
-COPY centos_openvino/entrypoint.sh /opt/openvino/
+COPY openvino/entrypoint.sh /opt/openvino/
 RUN chmod +x /opt/openvino/entrypoint.sh
 
 ENV TINI_VERSION v0.18.0

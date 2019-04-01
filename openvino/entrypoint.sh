@@ -7,7 +7,7 @@ export PATH=/opt/openvino/samples:$PATH
 
 openvino_model_path()
 {
-	if [ "$target" = "MYRIAD" ]; then
+	if [ "$TARGET" = "MYRIAD" ]; then
 		# MYRIAD supports networks with FP16 format only
 		target_precision="FP16"
 	else
