@@ -30,11 +30,15 @@ while true; do
 		ip netns exec host `dirname $0`/build/intel64/Release/face_detect_demo \
 			-d $TARGET \
 			-m `openvino_model_path face-detection-adas-0001` \
+			-d_ag $TARGET \
+			-m_ag `openvino_model_path age-gender-recognition-retail-0013` \
 			-i $INPUT_STREAM
 	else
 		`dirname $0`/build/intel64/Release/face_detect_demo \
 			-d $TARGET \
 			-m `openvino_model_path face-detection-adas-0001` \
+			-d_ag $TARGET \
+			-m_ag `openvino_model_path age-gender-recognition-retail-0013` \
 			-i $INPUT_STREAM
 	fi
 	sleep 1
