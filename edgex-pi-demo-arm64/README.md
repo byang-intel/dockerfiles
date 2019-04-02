@@ -18,7 +18,7 @@ wget -O docker-compose.yml https://raw.githubusercontent.com/byang-intel/dockerf
 
 2. Modify the Pi board addr in docker-compose.yml
 ```
-sed 's/INPUT_STREAM=.*/INPUT_STREAM=http:\/\/<your pi board ip>:49990/g' -i docker-compose.yml
+sed 's/INPUT_STREAM=.*/INPUT_STREAM=http:\/\/<your pi board ip>:49990\/camera.mjpeg/g' -i docker-compose.yml
 ```
 
 3. Launch all services

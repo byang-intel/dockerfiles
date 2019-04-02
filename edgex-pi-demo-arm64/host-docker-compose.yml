@@ -14,16 +14,49 @@ services:
     networks:
       - edgex-network
 
-  openvino_face_detect:
-    image: byangintel/openvino_face_detect
+  openvino_face_detect-cpu:
+    image: byangintel/openvino-face_detect-centos
     environment:
-      - INPUT_STREAM=http://10.239.154.151:49990
+      - INPUT_STREAM=http://<your pi board ip>:49990/camera.mjpeg
     ports:
       - "49990:49990"
-    container_name: openvino_face_detect
-    hostname: openvino_face_detect
+    container_name: openvino_face_detect-cpu
+    hostname: openvino_face_detect-cpu
     networks:
       - edgex-network
+
+  openvino_face_detect-gpu:
+    image: byangintel/openvino-face_detect-centos
+    environment:
+      - INPUT_STREAM=http://<your pi board ip>:49990/camera.mjpeg
+      - TARGET=GPU
+    ports:
+      - "49991:49990"
+    volumes:
+      - /dev:/dev
+    privileged: true
+    container_name: openvino_face_detect-gpu
+    hostname: openvino_face_detect-gpu
+    networks:
+      - edgex-network
+
+  openvino_face_detect-myriad:
+    image: byangintel/openvino-face_detect-centos
+    environment:
+      - INPUT_STREAM=http://<your pi board ip>:49990/camera.mjpeg
+      - TARGET=MYRIAD
+    ports:
+      - "49992:49990"
+    volumes:
+      - /dev:/dev
+      - /sys:/sys
+      - /proc/1/ns/net:/run/netns/host
+    privileged: true
+    container_name: openvino_face_detect-myriad
+    hostname: openvino_face_detect-myriad
+    networks:
+      - edgex-network
+
 
 networks:
   edgex-network:
