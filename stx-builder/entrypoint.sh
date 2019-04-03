@@ -13,7 +13,7 @@ if ! id $MYUNAME; then
 	if [ ! -e /home/$MYUNAME/.bashrc ]; then
 		rsync -av /etc/skel/ /home/$MYUNAME/
 	fi
-	chown $MYUNAME /home/$MYUNAME -R
+	chown $MYUNAME /home/$MYUNAME -R || true
 fi
 
 mkdir -p /localdisk/config

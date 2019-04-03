@@ -242,6 +242,9 @@ RUN yum install -y golang; mkdir -p ${GOPATH}/bin; curl https://raw.githubuserco
 RUN yum install -y openssh-server \
 	&& sshd-keygen
 
+COPY stx_setenv.sh /usr/local/bin/stx_setenv.sh
+RUN chmod +x /usr/local/bin/stx_setenv.sh
+
 COPY entrypoint.sh /opt/entrypoint.sh
 RUN chmod +x /opt/entrypoint.sh
 
