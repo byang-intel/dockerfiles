@@ -101,11 +101,11 @@ RUN groupadd -g 751 cgts && \
 # This image requires a set of scripts and helpers
 # for working correctly, in this section they are
 # copied inside the image.
-COPY stx-builder/toCOPY/finishSetup.sh /usr/local/bin
-COPY stx-builder/toCOPY/populate_downloads.sh /usr/local/bin
-COPY stx-builder/toCOPY/generate-cgcs-tis-repo /usr/local/bin
-COPY stx-builder/toCOPY/generate-cgcs-centos-repo.sh /usr/local/bin
-COPY stx-builder/toCOPY/.inputrc /home/$MYUNAME/
+COPY toCOPY/finishSetup.sh /usr/local/bin
+COPY toCOPY/populate_downloads.sh /usr/local/bin
+COPY toCOPY/generate-cgcs-tis-repo /usr/local/bin
+COPY toCOPY/generate-cgcs-centos-repo.sh /usr/local/bin
+COPY toCOPY/.inputrc /home/$MYUNAME/
 
 # cpan modules, installing with cpanminus to avoid stupid questions since cpan is whack
 RUN cpanm --notest Fatal && \
@@ -137,7 +137,7 @@ RUN useradd -s /sbin/nologin -u 9001 -g 9001 mockbuild && \
 # Inherited  tools for mock stuff
 # we at least need the mock_cache_unlock tool
 # they install into /usr/bin
-COPY stx-builder/toCOPY/cgcs_overlay /opt/cgcs_overlay
+COPY toCOPY/cgcs_overlay /opt/cgcs_overlay
 RUN cd /opt/cgcs_overlay && \
     make && \
     make install
@@ -227,8 +227,8 @@ RUN chown $MYUNAME /home/$MYUNAME && \
 # Customizations for mirror creation
 RUN rm /etc/yum.repos.d/CentOS-Sources.repo
 RUN rm /etc/yum.repos.d/epel.repo
-COPY stx-builder/centos-mirror-tools/yum.repos.d/* /etc/yum.repos.d/
-COPY stx-builder/centos-mirror-tools/rpm-gpg-keys/* /etc/pki/rpm-gpg/
+COPY centos-mirror-tools/yum.repos.d/* /etc/yum.repos.d/
+COPY centos-mirror-tools/rpm-gpg-keys/* /etc/pki/rpm-gpg/
 
 # Import GPG keys
 RUN rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY*
