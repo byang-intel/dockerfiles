@@ -238,5 +238,11 @@ ENV GOPATH="/usr/local/go"
 ENV PATH="${GOPATH}/bin:${PATH}"
 RUN yum install -y golang; mkdir -p ${GOPATH}/bin; curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
 
-# Don't know if it's possible to run services without starting this
-CMD /usr/sbin/init
+# add by bin.yang@intel.com
+RUN yum install -y openssh-server \
+	&& sshd-keygen
+
+COPY entrypoint.sh /opt/entrypoint.sh
+RUN chmod +x /opt/entrypoint.sh
+
+ENTRYPOINT ["/opt/entrypoint.sh"]
