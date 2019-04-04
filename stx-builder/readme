@@ -1,0 +1,4 @@
+To install package from original repo:
+```
+sudo yum --disablerepo=Starling* install package
+```
