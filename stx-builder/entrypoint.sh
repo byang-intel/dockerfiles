@@ -14,6 +14,7 @@ if ! id $MYUNAME; then
 		rsync -av /etc/skel/ /home/$MYUNAME/
 	fi
 	chown $MYUNAME /home/$MYUNAME -R || true
+	sed -i "s/builder/$MYUNAME/g" /etc/lighttpd/lighttpd.conf
 fi
 
 mkdir -p /localdisk/config
@@ -37,5 +38,7 @@ chown root:mock /localdisk/loadbuild/mock
 mkdir -p /localdisk/loadbuild/mock-cache
 chmod 775 /localdisk/loadbuild/mock-cache
 chown root:mock /localdisk/loadbuild/mock-cache
+
+/usr/sbin/lighttpd  -f /etc/lighttpd/lighttpd.conf
 
 /usr/sbin/sshd -D
