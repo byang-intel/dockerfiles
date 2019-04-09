@@ -1,0 +1,24 @@
+FROM amd64/ubuntu:16.04
+MAINTAINER yong.hu@intel.com
+WORKDIR /opt/mosquitto
+
+RUN apt-get update && apt-get install -y wget lsb-core vim bzip2  pkg-config patch sudo cpio iproute2 net-tools
+RUN apt-get update && apt-get install -y make autoconf libtool gcc g++ bison flex libc-ares-dev uuid-dev libwebsockets-dev libssl-dev xsltproc docbook-xsl
+
+# Install Mosiquitto
+RUN wget -O - https://mosquitto.org/files/source/mosquitto-1.5.8.tar.gz | tar xz
+RUN cd /opt/mosquitto/mosquitto-1.5.8 && make && make install
+
+# add a user named "mosquitto"
+RUN useradd mosquitto
+
+ENV TINI_VERSION v0.18.0
+RUN mkdir -p /usr/local/bin
+RUN wget -O /usr/local/bin/tini "https://github.com/krallin/tini/releases/download/$TINI_VERSION/tini"
+RUN chmod +x /usr/local/bin/tini
+
+COPY mosquitto/entrypoint.sh /opt/mosquitto/
+RUN chmod +x /opt/mosquitto/entrypoint.sh
+
+ENTRYPOINT ["/usr/local/bin/tini", "-g", "/opt/mosquitto/entrypoint.sh", "--"]
+CMD ["/bin/bash"]
