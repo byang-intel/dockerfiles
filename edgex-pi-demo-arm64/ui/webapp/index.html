@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>StarlingX Demo</title>
+  <link rel="stylesheet" href="/static/bootstrap-4.3.1/css/bootstrap.css">
+  <link rel="icon" type="image/png" sizes="32x32" href="/static/img/favicon_32.png">
+  <script src="/static/jquery-3.3.1.js"></script>
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #685BC7">
+  <a class="navbar-brand" href="/" style="color: white"><img src="/static/img/logo_white.png" width="48px" height="42px"><span class="ml-3">Home</span></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" href="/cam" style="color: white">Cam <span class="sr-only">(current)</span></a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="row" style="margin-top: 20px;">
+    <div class="col-4">
+
+      <div id="ele_server">
+        <div class="mt-1">
+          <input type="text" class="form-control" id="urlInput" placeholder="<MQTT Server Address>">
+        </div>
+        <div class="mt-1">
+          <input type="text" class="form-control" id="portInput" placeholder="<Port>">
+        </div>
+        <div class="mt-1">
+          <input type="text" class="form-control" id="clientidInput" placeholder="<Client ID>">
+        </div>
+        <div class="mt-1">
+          <button class="btn btn-outline-secondary" type="button">Connect</button>
+          <button class="btn btn-outline-secondary" type="button">Disconnect</button>
+        </div>
+      </div>
+
+      <div class="mt-4" id="ele_subscribe">
+        <select class="form-control">
+          <option value="acrn/ACRN1/report_VM1">acrn/ACRN1/report_VM1</option>
+          <option value="acrn/ACRN1/set_VM1">acrn/ACRN1/set_VM1</option>
+        </select>
+        <div class="mt-1">
+          <button class="btn btn-outline-secondary" type="button">Subscribe</button>
+        </div>
+      </div>
+
+      <div class="mt-4" id="ele_publish">
+        <select class="form-control">
+          <option value="acrn/ACRN1/report_VM1">acrn/ACRN1/report_VM1</option>
+          <option value="acrn/ACRN1/set_VM1">acrn/ACRN1/set_VM1</option>
+        </select>
+        <div class="input-group mt-3">
+          <input type="text" class="form-control" placeholder="<Message>">
+        </div>
+        <div class="mt-1">
+          <button class="btn btn-outline-secondary" type="button">Publish</button>
+        </div>
+      </div>
+
+    </div>
+
+
+    <div class="col-8">
+      <div class="row">
+        <h5>Connection Status: <span id="connection"></span></h5>
+      </div>
+      <div class="row">
+        <h5>Topic Status: Subscribed at <span id="topic_sub"></span></h5>
+      </div>
+      <div class="row">
+        <textarea rows="10" class="form-control" id="ele_messages"></textarea>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script language="javascript">
+
+var setup_ws = function() {
+  var host = window.location.host;
+  var ws = new WebSocket('ws://'+host+'/ws');
+  var $conn = $('#connection');
+  var $topic_sub = $('#topic_sub');
+
+  ws.onopen = function(){
+  };
+  ws.onmessage = function(ev){
+    var json = JSON.parse(ev.data);
+
+    if (json.action === "conn") {
+      $conn.text(json.addr + " " + json.status);
+    } else if (json.action === "topic") {
+      $topic_sub.text(json.topic)
+      if (json.message) {
+        msgdiv = document.getElementById('ele_messages');
+        msgdiv.append(json.topic + ': ' + json.message + '\n');
+        msgdiv.scrollTop = msgdiv.scrollHeight;
+      }
+    }
+
+  };
+  ws.onclose = function(ev){
+  };
+  ws.onerror = function(ev){
+  };
+};
+
+$(document).ready(function() {
+
+  // fill predefined values for testing, comment out for real case
+  $('#ele_server input:nth(0)').val('10.239.153.38');
+  $('#ele_server input:nth(1)').val('1883');
+  $('#ele_server input:nth(2)').val('acrn-stx-demo');
+
+  setup_ws();
+
+  $('#ele_server button:nth(0)').click(function() {
+    var data = {
+      addr: $('#ele_server input:nth(0)').val(),
+      port: $('#ele_server input:nth(1)').val(),
+      clientid: $('#ele_server input:nth(2)').val()
+    };
+    console.log("connecting");
+    console.log(data);
+    $.post('api', data).done(function() {
+      console.log("connected");
+    }).fail(function(error){
+      console.log(error);
+    });
+  });
+
+  $('#ele_server button:nth(1)').click(function() {
+    $.ajax({
+      url: 'api',
+      type: 'DELETE'
+    }).done(function(){
+      console.log("disconected");
+    }).fail(function(error){
+      console.log(error);
+    });
+  });
+
+  $('#ele_subscribe button:nth(0)').click(function() {
+    var data = {topic: $('#ele_subscribe select').val()};
+    console.log("post sub " + JSON.stringify(data));
+    $.post('sub', data).done(function() {
+      console.log("subed");
+    }).fail(function(error){
+      console.log(error);
+    });
+  });
+
+  $('#ele_publish button:nth(0)').click(function() {
+    var data = {
+      topic: $('#ele_publish select').val(),
+      message: $('#ele_publish input').val()
+    };
+    console.log("post pub " + JSON.stringify(data));
+    $.post('pub', data).done(function() {
+      console.log("subed");
+    }).fail(function(error){
+      console.log(error);
+	}).always(function() {
+	  console.log("always here");
+	});
+  });
+
+});
+
+</script>
+</body>
+</html>
