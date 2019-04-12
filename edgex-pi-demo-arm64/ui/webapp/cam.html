@@ -240,6 +240,7 @@ $(document).ready(function() {
   $('#ele_server input:nth(2)').val('edgex-pi-demo-arm64');
 
   setup_ws();
+  publish('{"command":"camera_on"}');
 
   $('#ele_server button:nth(0)').click(function() {
     var data = {
@@ -293,10 +294,12 @@ $(document).ready(function() {
     if ($(this).hasClass('active')) {
       $(this).removeClass('active');
       console.log("turn on");
-      publish('{"command":"camera_on"}');
+      //publish('{"command":"camera_on"}');
+      set_camera_output($('#ele_server input:nth(0)').val());
     } else {
       $(this).addClass('active');
-      publish('{"command":"camera_off"}');
+      //publish('{"command":"camera_off"}');
+      unset_camera_output();
     }
   });
 });
