@@ -239,7 +239,8 @@ services:
       - "49990:49990"
       - "49991:49991"
     environment:
-      - MQTT_BROKER_ADDR=10.239.145.111
+      - MQTT_BROKER_ADDR=<broker ip>
+      - OUTPUT_STREAM=http://<ffserver ip>:<ffserver port>/camera.ffm
     container_name: edgex-device-grove
     hostname: edgex-device-grove
     networks:

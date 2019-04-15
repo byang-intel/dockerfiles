@@ -14,10 +14,19 @@ services:
     networks:
       - edgex-network
 
+  ffserver:
+    image: byangintel/ffserver
+    ports:
+      - "49990:49990"
+    container_name: ffserver
+    hostname: ffserver
+    networks:
+      - edgex-network
+
   openvino_face_detect-cpu:
     image: byangintel/openvino-face_detect-centos
     environment:
-      - INPUT_STREAM=http://<your pi board ip>:49990/camera.mjpeg
+      - INPUT_STREAM=http://ffserver:49990/camera.mjpeg
     ports:
       - "49990:49990"
     container_name: openvino_face_detect-cpu
@@ -28,7 +37,7 @@ services:
   openvino_face_detect-gpu:
     image: byangintel/openvino-face_detect-centos
     environment:
-      - INPUT_STREAM=http://<your pi board ip>:49990/camera.mjpeg
+      - INPUT_STREAM=http://ffserver:49990/camera.mjpeg
       - TARGET=GPU
     ports:
       - "49991:49990"
@@ -43,7 +52,7 @@ services:
   openvino_face_detect-myriad:
     image: byangintel/openvino-face_detect-centos
     environment:
-      - INPUT_STREAM=http://<your pi board ip>:49990/camera.mjpeg
+      - INPUT_STREAM=http://ffserver:49990/camera.mjpeg
       - TARGET=MYRIAD
     ports:
       - "49992:49990"
