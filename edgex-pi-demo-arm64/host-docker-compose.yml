@@ -17,7 +17,7 @@ services:
   ffserver:
     image: byangintel/ffserver
     ports:
-      - "49990:49990"
+      - "49999:49990"
     container_name: ffserver
     hostname: ffserver
     networks:
