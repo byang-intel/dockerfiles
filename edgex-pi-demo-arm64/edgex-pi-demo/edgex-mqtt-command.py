@@ -8,7 +8,7 @@ import paho.mqtt.client as mqtt
 def camera_handle(command):
     if command == "camera_on" and not camera_handle.proc:
 #        camera_handle.proc = subprocess.Popen(['python3 /opt/edgex-pi-demo/camera2http.py'], shell=True)
-        camera_handle.proc = subprocess.Popen(['/usr/local/bin/ffmpeg -f v4l2 -framerate 1 -i /dev/video0 http://localhost:49990/camera.ffm'], shell=True)
+        camera_handle.proc = subprocess.Popen(['/usr/local/bin/ffmpeg -f v4l2 -framerate 1 -i /dev/video0 $OUTPUT_STREAM'], shell=True)
     elif command == "camera_off" and camera_handle.proc: 
 #        os.system("kill `cat /tmp/camera2http.pid`")
         os.system("killall ffmpeg")

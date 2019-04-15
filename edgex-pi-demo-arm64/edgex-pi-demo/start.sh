@@ -1,5 +1,8 @@
 #!/bin/sh
 
+: ${OUTPUT_STREAM:='http://localhost:49990/camera.ffm'}
+export OUTPUT_STREAM
+
 : ${MQTT_BROKER_PORT:=1883}
 TAG=`$MQTT_BROKER_ADDR:$MQTT_BROKER_PORT | md5sum | cut -d' ' -f 1`
 
