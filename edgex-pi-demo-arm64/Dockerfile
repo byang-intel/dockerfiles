@@ -8,6 +8,7 @@ RUN apt-get -y update \
 	&& apt-get install -y --no-install-recommends \
 		wget \
 		psmisc vim git curl cmake build-essential \
+		python3-opencv python-opencv python3-flask python-flask \
 		libmicrohttpd-dev libcurl4-openssl-dev libyaml-dev python3-paho-mqtt
 
 RUN apt-get install -y --no-install-recommends ca-certificates \

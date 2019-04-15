@@ -28,9 +28,9 @@ __EOF__
 
 curl -X POST -d @/tmp/sensor-dist-reg.json http://edgex-export-client:48071/api/v1/registration
 
-: ${VIDEOSIZE:=640x480}
-sed -i "s/VideoSize.*/VideoSize $VIDEOSIZE/g" /opt/edgex-pi-demo/ffserver.conf
-/usr/local/bin/ffserver -f /opt/edgex-pi-demo/ffserver.conf &
+#: ${VIDEOSIZE:=640x480}
+#sed -i "s/VideoSize.*/VideoSize $VIDEOSIZE/g" /opt/edgex-pi-demo/ffserver.conf
+#/usr/local/bin/ffserver -f /opt/edgex-pi-demo/ffserver.conf &
 
 while true; do
 	python3 /opt/edgex-pi-demo/edgex-mqtt-command.py
