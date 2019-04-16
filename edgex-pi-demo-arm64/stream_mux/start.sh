@@ -10,4 +10,4 @@ while true; do
 	/usr/local/bin/stream_poll.py $INPUT_STREAM
 	echo stream poll exits un-expected, restart...
     sleep 1
-done
+done 2>/dev/null
