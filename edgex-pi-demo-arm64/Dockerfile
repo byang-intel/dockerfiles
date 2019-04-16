@@ -4,6 +4,7 @@ WORKDIR /opt/build
 
 COPY hooks/qemu-aarch64-static /usr/bin/
 
+ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get -y update \
 	&& apt-get install -y --no-install-recommends \
 		wget \
