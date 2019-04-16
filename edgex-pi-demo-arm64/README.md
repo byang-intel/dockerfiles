@@ -16,7 +16,12 @@ wget https://raw.githubusercontent.com/byang-intel/dockerfiles/master/edgex-pi-d
 wget -O docker-compose.yml https://raw.githubusercontent.com/byang-intel/dockerfiles/master/edgex-pi-demo-arm64/host-docker-compose.yml
 ```
 
-2. Launch all services
+2. Modify the Pi board addr in docker-compose.yml
+```
+sed 's/<Pi board ip>/<ip address>/g' -i docker-compose.yml
+```
+
+3. Launch all services
 ```
 docker-compose up -d
 ```
