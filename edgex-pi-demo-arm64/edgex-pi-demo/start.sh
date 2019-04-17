@@ -31,6 +31,7 @@ curl -X POST -d @/tmp/sensor-dist-reg.json http://edgex-export-client:48071/api/
 #: ${VIDEOSIZE:=640x480}
 #sed -i "s/VideoSize.*/VideoSize $VIDEOSIZE/g" /opt/edgex-pi-demo/ffserver.conf
 #/usr/local/bin/ffserver -f /opt/edgex-pi-demo/ffserver.conf &
+python3 /opt/edgex-pi-demo/camera2http.py &
 
 while true; do
 	python3 /opt/edgex-pi-demo/edgex-mqtt-command.py
