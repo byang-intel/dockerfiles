@@ -83,12 +83,7 @@ wget https://raw.githubusercontent.com/byang-intel/dockerfiles/master/edgex-pi-d
 sed 's/MQTT_BROKER_ADDR=.*/MQTT_BROKER_ADDR=<your host ip>/g' -i docker-compose.yml
 ```
 
-3. Modify ffserver addr in docker-compose.yml if internal ffserver is not used
-```
-sed 's/OUTPUT_STREAM=.*/http://<your host ip>:49999/camera.ffm/g' -i docker-compose.yml
-```
-
-4. Launch all services
+3. Launch all services
 ```
 docker-compose up -d
 ```
