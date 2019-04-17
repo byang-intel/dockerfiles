@@ -240,7 +240,6 @@ $(document).ready(function() {
   $('#ele_server input:nth(2)').val('edgex-pi-demo-arm64');
 
   setup_ws();
-  publish('{"command":"camera_on"}');
 
   $('#ele_server button:nth(0)').click(function() {
     var data = {
@@ -251,6 +250,7 @@ $(document).ready(function() {
     $.post('api', data).done(function() {
       console.log("connected");
       subscribe();
+      publish('{"command":"camera_on"}');
       set_camera_output($('#ele_server input:nth(0)').val());
     }).fail(function(error){
       console.log(error);
