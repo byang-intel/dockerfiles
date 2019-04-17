@@ -250,7 +250,7 @@ $(document).ready(function() {
     $.post('api', data).done(function() {
       console.log("connected");
       subscribe();
-      publish('{"command":"camera_on"}');
+      //publish('{"command":"camera_on"}');
       set_camera_output($('#ele_server input:nth(0)').val());
     }).fail(function(error){
       console.log(error);
