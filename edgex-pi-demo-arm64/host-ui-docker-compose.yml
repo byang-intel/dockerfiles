@@ -1,16 +1,13 @@
 version: '3'
 
 services:
-  hivemq3:
-    image: hivemq/hivemq3
+  mosquitto:
+    image: eclipse-mosquitto:1.5.8
     ports:
       - "1883:1883"
-      - "8080:8080"
-      - "8081:8081"
-    volumes:
-      - ./hivemq.conf:/opt/hivemq-3.4.3/conf/config.xml
-    container_name: hivemq3
-    hostname: hivemq3
+      - "9991:9001"
+    container_name: mosquitto
+    hostname: mosquitto
     networks:
       - edgex-network
 
@@ -25,16 +22,16 @@ services:
     networks:
       - edgex-network
 
-  openvino_face_detect-cpu:
-    image: byangintel/openvino-face_detect-centos
-    environment:
-      - INPUT_STREAM=http://stream_mux:49990
-    ports:
-      - "49990:49990"
-    container_name: openvino_face_detect-cpu
-    hostname: openvino_face_detect-cpu
-    networks:
-      - edgex-network
+#  openvino_face_detect-cpu:
+#    image: byangintel/openvino-face_detect-centos
+#    environment:
+#      - INPUT_STREAM=http://stream_mux:49990
+#    ports:
+#      - "49990:49990"
+#    container_name: openvino_face_detect-cpu
+#    hostname: openvino_face_detect-cpu
+#    networks:
+#      - edgex-network
 
   openvino_face_detect-gpu:
     image: byangintel/openvino-face_detect-centos
@@ -69,7 +66,15 @@ services:
     networks:
       - edgex-network
 
-
+  demo_webui:
+    image: byangintel/edgex-pi-demo-ui
+    ports:
+      - 8123:8888
+    container_name: demo_webui_app
+    hostname: webui
+    networks:
+      - edgex-network
+  
 networks:
   edgex-network:
     driver: "bridge"
