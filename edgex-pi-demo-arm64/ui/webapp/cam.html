@@ -184,7 +184,7 @@ var setup_ws = function() {
     var json = JSON.parse(ev.data);
 
     if (json.action === "conn") {
-      $message.text(json.addr + " " + json.status);
+      $message.text(json.status);
     } else if (json.action === "topic") {
       if (json.message.value) {
         $distance.text("Distance: " + json.message.value);
@@ -235,7 +235,7 @@ var publish = function(msg) {
 $(document).ready(function() {
 
   // fill predefined values for testing, comment out for real case
-  $('#ele_server input:nth(0)').val('10.239.147.80');
+  $('#ele_server input:nth(0)').val(window.location.hostname);
   $('#ele_server input:nth(1)').val('1883');
   $('#ele_server input:nth(2)').val('edgex-pi-demo-arm64');
 
