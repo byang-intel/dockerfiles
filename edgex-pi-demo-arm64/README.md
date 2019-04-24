@@ -92,6 +92,13 @@ If the MQTT_BROKER_ADDR is modified, it needs to re-launch the services
 docker-compose restart
 ```
 
+4. performance tuning
+If your machine cannot run face detect above 30 fps, it needs to limit the max fps of stream input.
+e.g. limit the stream input of myriad target as below:
+```
+INPUT_STREAM=http://localhost:49999/?fps_max=3
+```
+
 ## MQTT Message Format
 
 ### From Pi to Host:
