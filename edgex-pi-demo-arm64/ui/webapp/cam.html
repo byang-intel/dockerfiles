@@ -51,18 +51,18 @@
   </div>
 </nav>
 
-<div class="container">
+<div class="container" style="min-width: 1300px;">
   <div class="mt-3 bg-light shadow-sm">
     <!-- <h3>StarlingX (+OpenVINO) - EdgeX Integration Demo</h3> -->
     <div class="row">
     <div class="col-6">
     <ul>
-      <li>EdgeX Gateway directly connects with and manages IOT devices or sensors</li>
-      <li>StarlingX monitors EdgeX Gateway through EdgeX north-bound interface</li>
+      <li>EdgeX Gateway directly connects with and manages IOT devices or sensors.</li>
+      <li>StarlingX monitors EdgeX Gateway through EdgeX north-bound interface:</li>
       <ul>
-        <li>Exchanging messages, bi-direction</li>
-        <li>Receiving actual workload data</li>
-        <li>Passing data to EdgeX gateway, or even down to devices</li>
+        <li>Exchanging messages, bi-direction;</li>
+        <li>Receiving actual workload data;</li>
+        <li>Passing data to EdgeX gateway, or even down to devices.</li>
       </ul>
       <li>Workload processing on StarlingX work nodes:</li>
       <ul>
@@ -72,8 +72,9 @@
       </ul>
     </ul>
     </div>
-    <div class="col-6">
-      <img width="95%" src="/static/img/demo.gif">
+	<div class="col-1"></div>
+    <div class="col-5">
+      <img width="100%" src="/static/img/demo.gif">
     </div>
     </div>
   </div>
@@ -84,17 +85,35 @@
     <!--                            -->
     <!-- Bottom Left                -->
     <!--                            -->
-    <div class="col-6">
-      <div class="ui-widget-content" style="min-width: 480px;">
+    <div class="col-4">
+      <div class="ui-widget-content" >
           <div class="large-8 columns face-detectTop">
             <div class="row justify-content-center">
-            <div class="col-8">
+            <div class="col-12">
               <h5>Face Detection (GPU)</h5>
               </div>
             </div>
           </div>
           <div class="row justify-content-center">
-            <img width="480px" class="col-10" height="320px" id="face-detect-1" src="/static/img/000.png">
+            <img width="480px" class="col-12" height="320px" id="face-detect-gpu" src="/static/img/000.png">
+          </div>
+      </div>
+    </div>
+
+    <!--                            -->
+    <!-- Bottom Middle               -->
+    <!--                            -->
+    <div class="col-4">
+      <div class="ui-widget-content" >
+          <div class="large-8 columns face-detectTop">
+            <div class="row justify-content-center">
+            <div class="col-12">
+              <h5>Face Detection (CPU)</h5>
+              </div>
+            </div>
+          </div>
+          <div class="row justify-content-center">
+            <img width="480px" class="col-12" height="320px" id="face-detect-cpu" src="/static/img/000.png">
           </div>
       </div>
     </div>
@@ -102,20 +121,19 @@
     <!--                            -->
     <!-- Bottom Right               -->
     <!--                            -->
-    <div class="col-6 mx-auto">
-      <div class="ui-widget-content" style="min-width: 480px;">
+    <div class="col-4">
+      <div class="ui-widget-content" >
           <div class="large-8 columns face-detectTop">
             <div class="row justify-content-center">
-            <div class="col-8">
+            <div class="col-12">
               <h5>Face Detection (Movidius NCS)</h5>
               </div>
             </div>
           </div>
           <div class="row justify-content-center">
-            <img width="480px" class="col-10" height="320px" id="face-detect-2" src="/static/img/000.png">
+            <img width="480px" class="col-12" height="320px" id="face-detect-ncs" src="/static/img/000.png">
           </div>
       </div>
-
     </div>
 
   </div>
@@ -162,21 +180,29 @@
 var camera_on = false;
 
 var set_camera_output = function(url) {
-  $('#face-detect-1').attr('src', 'http://' + url + ':49991');
-  $('#face-detect-2').attr('src', 'http://' + url + ':49992');
+  $('#face-detect-gpu').attr('src', 'http://' + url + ':49991');
+  $('#face-detect-ncs').attr('src', 'http://' + url + ':49993');
+  $('#face-detect-cpu').attr('src', 'http://' + url + ':49992');
 };
 
 var unset_camera_output = function() {
-  $('#face-detect-1').attr('src', '/static/img/000.png');
-  $('#face-detect-2').attr('src', '/static/img/000.png');
+  $('#face-detect-gpu').attr('src', '/static/img/000.png');
+  $('#face-detect-ncs').attr('src', '/static/img/000.png');
+  $('#face-detect-cpu').attr('src', '/static/img/000.png');
 };
 
 
 var setup_ws = function() {
   var host = window.location.host;
+  var parsedUrl = new URL(window.location.href);
   var ws = new WebSocket('ws://'+host+'/ws');
   var $message = $('#message');
   var $distance = $('#distance');
+
+  var ud_dist = parsedUrl.searchParams.get("dist");
+  if (ud_dist <= 0) {
+    ud_dist = 30;
+  }
 
   ws.onopen = function(){
   };
@@ -188,10 +214,10 @@ var setup_ws = function() {
     } else if (json.action === "topic") {
       if (json.message.value) {
         $distance.text("Distance: " + json.message.value);
-        if (json.message.value <= 29 && !camera_on) {
+        if (json.message.value <= ud_dist && !camera_on) {
           set_camera_output($('#ele_server input:nth(0)').val());
           camera_on = true;
-        } else if (json.message.value >= 31 && camera_on) {
+        } else if (json.message.value >= ud_dist + 5 && camera_on) {
           unset_camera_output();
           camera_on = false;
         }
