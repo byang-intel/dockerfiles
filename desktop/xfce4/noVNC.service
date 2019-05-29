@@ -1,0 +1,12 @@
+[Unit]
+Description=noVNC
+After=network.target
+After=vncserver@:0.service
+
+[Service]
+Type=simple
+User=root
+ExecStart=/bin/sh -c '/opt/noVNC/utils/launch.sh --vnc localhost:5900 --listen 6080'
+
+[Install]
+WantedBy=multi-user.target
