@@ -1,4 +1,4 @@
-FROM ubuntu:16.04
+FROM ubuntu:18.04
 MAINTAINER bin.yang@intel.com
 
 ENV LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 LANGUAGE='en_US:en' \
@@ -52,5 +52,6 @@ VOLUME /sys/fs/cgroup
 
 # noVNC
 EXPOSE 6080
+EXPOSE 22
 
 CMD ["/sbin/init"]
