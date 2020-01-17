@@ -12,7 +12,7 @@ RUN sed -i 's/# deb-src/deb-src/g' /etc/apt/sources.list \
         software-properties-common \
     && add-apt-repository ppa:strukturag/libheif \
     && apt-get install -y \
-        locales ca-certificates wget curl vim git zip unzip \
+        locales ca-certificates wget curl vim git \
         libheif-dev libheif-examples \
     && locale-gen en_US.UTF-8 \
     && update-ca-certificates \
@@ -42,7 +42,7 @@ RUN apt-get -y update \
         software-properties-common \
     && add-apt-repository ppa:strukturag/libheif \
     && apt-get install -y \
-        locales ca-certificates sudo openssh-client wget curl vim git rsync \
+        locales ca-certificates sudo openssh-client wget curl vim git rsync zip unzip \
         ffmpeg libheif-dev libheif-examples webp \
 	imagemagick \
     && locale-gen en_US.UTF-8 \
