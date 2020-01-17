@@ -12,7 +12,7 @@ RUN sed -i 's/# deb-src/deb-src/g' /etc/apt/sources.list \
         software-properties-common \
     && add-apt-repository ppa:strukturag/libheif \
     && apt-get install -y \
-        locales ca-certificates wget curl vim git \
+        locales ca-certificates wget curl vim git zip unzip \
         libheif-dev libheif-examples \
     && locale-gen en_US.UTF-8 \
     && update-ca-certificates \
